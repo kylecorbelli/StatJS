@@ -20,6 +20,10 @@ var Stat = {
     return (array.reduce(function(prev, next) {
       return (prev + Math.pow(next - mean, 2));
     }, 0) / (array.length - 1));
+  },
+  stdev: function(array) {
+    Stat.requireArray(array);
+    return Math.pow(Stat.variance(array), 0.5);
   }
 };
 
