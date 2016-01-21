@@ -15,3 +15,6 @@ var testArr = [4, 3, 6, 3, 5, 12];
 
 // Test Stat.sum
 test(Stat.sum, testArr, 33);
+
+// Test Stat.mean
+test(Stat.mean, testArr, 5.5);
