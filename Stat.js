@@ -5,9 +5,12 @@ var Stat = {
     }
     array.forEach(function(element) {
       if (typeof element !== 'number') {
-        throw new Error('This method requires a numeric array as input');
+        throw new Error('This method requires a NUMERIC array as input');
       }
     });
+    if (array.length === 0) {
+      throw new Error('This method requires a NON-EMPTY numeric array as input');
+    }
   },
   sum: function(array) {
     Stat.requireArray(array);
