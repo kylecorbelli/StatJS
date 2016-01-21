@@ -3,6 +3,11 @@ var Stat = {
     if (!Array.isArray(array)) {
       throw new Error('This method requires a numeric array as input');
     }
+    array.forEach(function(element) {
+      if (typeof element !== 'number') {
+        throw new Error('This method requires a numeric array as input');
+      }
+    });
   },
   sum: function(array) {
     Stat.requireArray(array);
