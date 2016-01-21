@@ -18,3 +18,6 @@ test(Stat.sum, testArr, 33);
 
 // Test Stat.mean
 test(Stat.mean, testArr, 5.5);
+
+// Test Stat.variance
+test(Stat.variance, testArr, 11.5);
