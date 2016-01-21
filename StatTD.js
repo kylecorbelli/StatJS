@@ -10,3 +10,8 @@ var test = function(method, testArray, expected) {
   }
   console.log(message);
 };
+
+var testArr = [4, 3, 6, 3, 5, 12];
+
+// Test Stat.sum
+test(Stat.sum, testArr, 33);
