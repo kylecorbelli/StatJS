@@ -13,6 +13,13 @@ var Stat = {
   mean: function(array) {
     Stat.requireArray(array);
     return (Stat.sum(array) / array.length);
+  },
+  variance: function(array) {
+    Stat.requireArray(array);
+    var mean = Stat.mean(array);
+    return (array.reduce(function(prev, next) {
+      return (prev + Math.pow(next - mean, 2));
+    }, 0) / (array.length - 1));
   }
 };
 
