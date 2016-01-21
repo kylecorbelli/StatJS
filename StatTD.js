@@ -33,3 +33,5 @@ test(Stat.mean, testArr, 5.5);
 // Test Stat.variance
 test(Stat.variance, testArr, 11.5);
 
+// Test Stat.stdev
+testWithTolerance(Stat.stdev, testArr, 3.39116499156263, errorTolerance);
