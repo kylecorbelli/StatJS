@@ -39,6 +39,11 @@ class Stat {
     return Math.sqrt(Stat.variance(arrayInput));
   }
 
+  public static stdError(arrayInput: number[]): number {
+    Stat.requireArray(arrayInput);
+    return (Stat.stdev(arrayInput) / Math.sqrt(arrayInput.length));
+  }
+
 }
 
 module.exports = Stat;
