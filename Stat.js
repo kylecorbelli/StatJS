@@ -35,6 +35,10 @@ var Stat = (function () {
         Stat.requireArray(arrayInput);
         return Math.sqrt(Stat.variance(arrayInput));
     };
+    Stat.stdError = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        return (Stat.stdev(arrayInput) / Math.sqrt(arrayInput.length));
+    };
     return Stat;
 })();
 module.exports = Stat;
