@@ -1,38 +1,40 @@
-var Stat = {
-  requireArray: function(array) {
-    if (!Array.isArray(array)) {
-      throw new Error('This method requires a numeric array as input');
+var Stat = (function () {
+    function Stat() {
     }
-    array.forEach(function(element) {
-      if (typeof element !== 'number') {
-        throw new Error('This method requires a NUMERIC array as input');
-      }
-    });
-    if (array.length === 0) {
-      throw new Error('This method requires a NON-EMPTY numeric array as input');
-    }
-  },
-  sum: function(array) {
-    Stat.requireArray(array);
-    return array.reduce(function(prev, next) {
-      return (prev + next);
-    });
-  },
-  mean: function(array) {
-    Stat.requireArray(array);
-    return (Stat.sum(array) / array.length);
-  },
-  variance: function(array) {
-    Stat.requireArray(array);
-    var mean = Stat.mean(array);
-    return (array.reduce(function(prev, next) {
-      return (prev + Math.pow(next - mean, 2));
-    }, 0) / (array.length - 1));
-  },
-  stdev: function(array) {
-    Stat.requireArray(array);
-    return Math.pow(Stat.variance(array), 0.5);
-  }
-};
-
+    Stat.requireArray = function (arrayInput) {
+        if (!Array.isArray(arrayInput)) {
+            throw new Error('This method requires a numeric array as input');
+        }
+        arrayInput.forEach(function (element) {
+            if (typeof element !== 'number') {
+                throw new Error('This method requires a NUMERIC array as input');
+            }
+        });
+        if (arrayInput.length === 0) {
+            throw new Error('This method requires a NON-EMPTY numeric array as input');
+        }
+    };
+    Stat.sum = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        return arrayInput.reduce(function (prev, next) {
+            return (prev + next);
+        });
+    };
+    Stat.mean = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        return (Stat.sum(arrayInput) / arrayInput.length);
+    };
+    Stat.variance = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        var mean = Stat.mean(arrayInput);
+        return (arrayInput.reduce(function (prev, next) {
+            return (prev + Math.pow(next - mean, 2));
+        }, 0) / (arrayInput.length - 1));
+    };
+    Stat.stdev = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        return Math.sqrt(Stat.variance(arrayInput));
+    };
+    return Stat;
+})();
 module.exports = Stat;
