@@ -41,7 +41,7 @@
       expect(Stat.variance).to.throw(Error);
       expect(Stat.stdev).to.throw(Error);
       expect(Stat.stdError).to.throw(Error);
-      expect(Stat.corel).to.throw(Error);
+      expect(Stat.correl).to.throw(Error);
     });
 
     describe('Stat.sum', function() {
@@ -75,7 +75,7 @@
       });
 
       it('should return the correct correlation coefficient', function() {
-        expect(Stat.correl(cArr1, cArr2)).to.equal(0.815628901048582);
+        expect(Stat.correl(cArr1, cArr2)).to.equal(0.8156289010485813);
       });
 
     });
