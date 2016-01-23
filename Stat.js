@@ -39,6 +39,23 @@ var Stat = (function () {
         Stat.requireArray(arrayInput);
         return (Stat.stdev(arrayInput) / Math.sqrt(arrayInput.length));
     };
+    Stat.correl = function (array1, array2) {
+        Stat.requireArray(array1);
+        Stat.requireArray(array2);
+        var size = array1.length;
+        if (size !== array2.length) {
+            throw new Error('Stat.correl requires two arrays of the same length');
+        }
+        var sumOfXYproducts = 0;
+        for (var i = 0; i < size; i++) {
+            sumOfXYproducts += (array1[i] * array2[i]);
+        }
+        var meanOfArray1 = Stat.mean(array1);
+        var meanOfArray2 = Stat.mean(array2);
+        var stdevOfArray1 = Stat.stdev(array1);
+        var stdevOfArray2 = Stat.stdev(array2);
+        return (sumOfXYproducts - size * meanOfArray1 * meanOfArray2) / (stdevOfArray1 * stdevOfArray2) / (size - 1);
+    };
     return Stat;
 })();
 module.exports = Stat;
