@@ -14,6 +14,14 @@ class Stat {
     }
   }
 
+  private static objectToNumber(objectArray: Object[], keySelectorFn: Function): number[] {
+    var resultArray: number[] = [];
+    for (var i: number = 0; i < objectArray.length; i++) {
+      resultArray.push(keySelectorFn(objectArray[i]));
+    }
+    return resultArray;
+  }
+
   public static sum(arrayInput: number[]): number {
     Stat.requireArray(arrayInput);
     return arrayInput.reduce(function(prev: number, next: number): number {

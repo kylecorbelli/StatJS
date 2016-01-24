@@ -14,19 +14,16 @@ var Stat = (function () {
             throw new Error('This method requires a NON-EMPTY numeric array as input');
         }
     };
-    Stat.sum = function (input, keySelectorFn) {
-        var arrayToUse = [];
-        if ((Array.isArray(input)) && (typeof input[0] === 'object')) {
-            console.log('passed');
-            for (var i = 0; i < input.length; i++) {
-                arrayToUse.push(keySelectorFn(input[i]));
-            }
+    Stat.objectToNumber = function (objectArray, keySelectorFn) {
+        var resultArray = [];
+        for (var i = 0; i < objectArray.length; i++) {
+            resultArray.push(keySelectorFn(objectArray[i]));
         }
-        else {
-            arrayToUse = input.slice();
-        }
-        Stat.requireArray(arrayToUse);
-        return arrayToUse.reduce(function (prev, next) {
+        return resultArray;
+    };
+    Stat.sum = function (arrayInput) {
+        Stat.requireArray(arrayInput);
+        return arrayInput.reduce(function (prev, next) {
             return (prev + next);
         });
     };
