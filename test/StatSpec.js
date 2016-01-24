@@ -14,6 +14,7 @@
     var someFunc;
     var someObj;
     var objs;
+    var result;
 
     beforeEach(function() {
       testArr = [7, 4, 4.3, -1, 3.14, 8, 2, 9.22221, 4];
@@ -39,6 +40,7 @@
 
     it('should have methods "requireArray", "sum", "mean", "variance", "stdev", "stdError", "covar", "correl"', function() {
       expect(Stat.requireArray).to.be.a('function');
+      expect(Stat.objectToNumber).to.be.a('function');
       expect(Stat.sum).to.be.a('function');
       expect(Stat.mean).to.be.a('function');
       expect(Stat.variance).to.be.a('function');
@@ -57,6 +59,20 @@
       expect(Stat.stdError).to.throw(Error);
       expect(Stat.covar).to.throw(Error);
       expect(Stat.correl).to.throw(Error);
+    });
+
+    describe('Stat.objectToNumber', function() {
+
+      beforeEach(function() {
+        result = Stat.objectToNumber(objs, function(item) {
+          return item.dataPoint;
+        });
+      });
+
+      it('should return the correct array of numbers', function() {
+        expect(result).to.deep.equal(cArr1);
+      });
+
     });
 
     describe('Stat.sum', function() {
