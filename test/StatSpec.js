@@ -24,13 +24,14 @@
       someObj = {};
     });
 
-    it('should have methods "requireArray", "sum", "mean", "variance", "stdev", "stdError", "correl"', function() {
+    it('should have methods "requireArray", "sum", "mean", "variance", "stdev", "stdError", "covar", "correl"', function() {
       expect(Stat.requireArray).to.be.a('function');
       expect(Stat.sum).to.be.a('function');
       expect(Stat.mean).to.be.a('function');
       expect(Stat.variance).to.be.a('function');
       expect(Stat.stdev).to.be.a('function');
       expect(Stat.stdError).to.be.a('function');
+      expect(Stat.covar).to.be.a('function');
       expect(Stat.correl).to.be.a('function');
     });
 
@@ -41,6 +42,7 @@
       expect(Stat.variance).to.throw(Error);
       expect(Stat.stdev).to.throw(Error);
       expect(Stat.stdError).to.throw(Error);
+      expect(Stat.covar).to.throw(Error);
       expect(Stat.correl).to.throw(Error);
     });
 
@@ -68,6 +70,18 @@
 
     });
 
+    describe('Stat.covar', function() {
+
+      it('should return a number', function() {
+        expect(Stat.covar(cArr1, cArr2)).to.be.a('number');
+      });
+
+      it('should return the correct covariance', function() {
+        expect(Stat.covar(cArr1, cArr2)).to.equal(20.4111111111111111);
+      });
+
+    });
+
     describe('Stat.correl', function() {
 
       it('should return a number', function() {
@@ -75,7 +89,7 @@
       });
 
       it('should return the correct correlation coefficient', function() {
-        expect(Stat.correl(cArr1, cArr2)).to.equal(0.8156289010485813);
+        expect(Stat.correl(cArr1, cArr2)).to.equal(0.8156289010485822);
       });
 
     });
