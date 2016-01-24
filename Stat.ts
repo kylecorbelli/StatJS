@@ -14,17 +14,21 @@ class Stat {
     }
   }
 
-  private static objectToNumber(objectArray: Object[], keySelectorFn: Function): number[] {
+  private static objectToNumber(collection: any[], keySelectorFn: Function): number[] {
     var resultArray: number[] = [];
-    for (var i: number = 0; i < objectArray.length; i++) {
-      resultArray.push(keySelectorFn(objectArray[i]));
+    if (typeof collection[0] === 'number') {
+      return collection;
+    }
+    for (var i: number = 0; i < collection.length; i++) {
+      resultArray.push(keySelectorFn(collection[i]));
     }
     return resultArray;
   }
 
-  public static sum(arrayInput: number[]): number {
-    Stat.requireArray(arrayInput);
-    return arrayInput.reduce(function(prev: number, next: number): number {
+  public static sum(collection: number[] | Object[], keySelectorFn?: Function): number {
+    var array: number[] = Stat.objectToNumber(collection, keySelectorFn);
+    Stat.requireArray(array);
+    return array.reduce(function(prev: number, next: number): number {
       return (prev + next);
     });
   }
