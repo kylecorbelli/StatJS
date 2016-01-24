@@ -44,6 +44,21 @@ class Stat {
     return (Stat.stdev(arrayInput) / Math.sqrt(arrayInput.length));
   }
 
+  public static covar(array1: number[], array2: number[]): number {
+    Stat.requireArray(array1);
+    Stat.requireArray(array2);
+    if (array1.length !== array2.length) {
+      throw new Error('Stat.covar requires two arrays of the same length');
+    }
+    var mean1: number = Stat.mean(array1);
+    var mean2: number = Stat.mean(array2);
+    var sumOfErrorProducts: number = 0;
+    for (var i: number = 0; i < array1.length; i++) {
+      sumOfErrorProducts += ((array1[i] - mean1) * (array2[i] - mean2));
+    }
+    return sumOfErrorProducts / (array1.length - 1);
+  }
+
   public static correl(array1: number[], array2: number[]): number {
     Stat.requireArray(array1);
     Stat.requireArray(array2);
@@ -51,15 +66,9 @@ class Stat {
     if (size !== array2.length) {
       throw new Error('Stat.correl requires two arrays of the same length');
     }
-    var sumOfXYproducts: number = 0;
-    for (var i = 0; i < size; i++) {
-      sumOfXYproducts += (array1[i] * array2[i]);
-    }
-    var meanOfArray1: number = Stat.mean(array1);
-    var meanOfArray2: number = Stat.mean(array2);
-    var stdevOfArray1: number = Stat.stdev(array1);
-    var stdevOfArray2: number = Stat.stdev(array2);
-    return (sumOfXYproducts - size * meanOfArray1 * meanOfArray2) / (stdevOfArray1 * stdevOfArray2) / (size - 1);
+    var stdev1 = Stat.stdev(array1);
+    var stdev2 = Stat.stdev(array2);
+    return Stat.covar(array1, array2) / (stdev1 * stdev2);    
   }
 
 }
