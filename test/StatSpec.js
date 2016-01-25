@@ -38,7 +38,9 @@
       someObj = {};
     });
 
-    it('should have methods "requireArray", "sum", "mean", "variance", "stdev", "stdError", "covar", "correl"', function() {
+    it('should have methods "each", "all", "requireArray", "sum", "mean", "variance", "stdev", "stdError", "covar", "correl"', function() {
+      expect(Stat.each).to.be.a('function');
+      expect(Stat.all).to.be.a('function');
       expect(Stat.requireArray).to.be.a('function');
       expect(Stat.objectToNumber).to.be.a('function');
       expect(Stat.sum).to.be.a('function');
@@ -59,6 +61,83 @@
       expect(Stat.stdError).to.throw(Error);
       expect(Stat.covar).to.throw(Error);
       expect(Stat.correl).to.throw(Error);
+    });
+
+    describe('Stat.each', function() {
+
+      it('should call the callback function on each item in the input array', function() {
+        var a = [1, 2, 3, 4];
+        var b = [];
+        Stat.each(a, function(e) {
+          b.push(2 * e);
+        });
+        expect(b).to.deep.equal([2, 4, 6, 8]);
+      });
+
+    });
+
+    describe('Stat.all', function() {
+
+      it('should return true if every element in the array', function() {
+        var a = [2, 4, 6, 8, 10];
+        var result = Stat.all(a, function(e) {
+          return (e % 2 === 0);
+        });
+        expect(result).to.equal(true);
+      });
+
+      it('should return false if any element in the array evaluates to true in the callback function', function() {
+        var a = [2, 4, 6, 8, 9, 52, 10];
+        var result = Stat.all(a, function(e) {
+          return (e % 2 === 0);
+        });
+        expect(result).to.equal(false);
+      });
+
+    });
+
+    describe('Stat.requireArray', function() {
+
+      it('should return the same array it is given if the input array is numeric', function() {
+        expect(Stat.requireArray([1, 2, 3])).to.deep.equal([1, 2, 3]);
+      });
+
+      it('should return a numeric array when given an array of objects', function() {
+        expect(Stat.requireArray(objs, function(e) {
+          return e.dataPoint;
+        })).to.deep.equal(cArr1);
+      });
+
+      it('should throw an error when given anything other than an array', function() {
+        expect(function() {
+          Stat.requireArray('a');
+        }).to.throw(Error);
+        expect(function() {
+          Stat.requireArray(1, 6);
+        }).to.throw(Error);
+        expect(function() {
+          Stat.requireArray(true);
+        }).to.throw(Error);
+        expect(function() {
+          Stat.requireArray(null);
+        }).to.throw(Error);
+        expect(function() {
+          Stat.requireArray(undefined);
+        }).to.throw(Error);
+      });
+
+      it('should not throw an error when given valid input', function() {
+        expect(function() {
+          Stat.requireArray([1, 2, 3]);
+        }).not.to.throw(Error);
+      });
+
+      it('should throw an error when given an array containing something other than a number or object', function() {
+        expect(function() {
+          Stat.requireArray([1, 2, 'a']);
+        }).to.throw(Error);
+      });
+
     });
 
     describe('Stat.objectToNumber', function() {
