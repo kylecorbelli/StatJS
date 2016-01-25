@@ -37,11 +37,11 @@ var Stat = (function () {
                 });
             }
             else {
-                throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+                throw new Error('Method requires as input an array of numeric values or an array of objects with a numeric property');
             }
         }
         else {
-            throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+            throw new Error('Method requires as input an array of numeric values or an array of objects with a numeric property');
         }
         return array;
     };
@@ -64,27 +64,27 @@ var Stat = (function () {
         });
     };
     Stat.mean = function (collection, keySelectorFn) {
-        var array = Stat.requireArray(collection);
+        var array = Stat.requireArray(collection, keySelectorFn);
         return (Stat.sum(array) / array.length);
     };
     Stat.variance = function (collection, keySelectorFn) {
-        var array = Stat.requireArray(collection);
+        var array = Stat.requireArray(collection, keySelectorFn);
         var mean = Stat.mean(array);
         return (array.reduce(function (prev, next) {
             return (prev + Math.pow(next - mean, 2));
         }, 0) / (array.length - 1));
     };
     Stat.stdev = function (collection, keySelectorFn) {
-        var array = Stat.requireArray(collection);
+        var array = Stat.requireArray(collection, keySelectorFn);
         return Math.sqrt(Stat.variance(array));
     };
     Stat.stdError = function (collection, keySelectorFn) {
-        var array = Stat.requireArray(collection);
+        var array = Stat.requireArray(collection, keySelectorFn);
         return (Stat.stdev(array) / Math.sqrt(array.length));
     };
     Stat.covar = function (collection1, collection2, keySelectorFn) {
-        var array1 = Stat.requireArray(collection1);
-        var array2 = Stat.requireArray(collection2);
+        var array1 = Stat.requireArray(collection1, keySelectorFn);
+        var array2 = Stat.requireArray(collection2, keySelectorFn);
         if (array1.length !== array2.length) {
             throw new Error('Stat.covar requires two arrays of the same length');
         }
@@ -97,8 +97,8 @@ var Stat = (function () {
         return sumOfErrorProducts / (array1.length - 1);
     };
     Stat.correl = function (collection1, collection2, keySelectorFn) {
-        var array1 = Stat.requireArray(collection1);
-        var array2 = Stat.requireArray(collection2);
+        var array1 = Stat.requireArray(collection1, keySelectorFn);
+        var array2 = Stat.requireArray(collection2, keySelectorFn);
         var size = array1.length;
         if (size !== array2.length) {
             throw new Error('Stat.correl requires two arrays of the same length');

@@ -44,19 +44,6 @@ class Stat {
     return array;
   }
 
-  // private static objectToNumber(collection: number[]): number;
-  // private static objectToNumber(collection: Object[], keySelectorFn: Function): number;
-  private static objectToNumber(collection: number[] | Object[], keySelectorFn?: Function): any {
-    var resultArray: number[] = [];
-    if (typeof collection[0] === 'number') {
-      return collection;
-    }
-    for (var i: number = 0; i < collection.length; i++) {
-      resultArray.push(keySelectorFn(collection[i]));
-    }
-    return resultArray;
-  }
-
   public static sum(collection: number[] | Object[], keySelectorFn?: Function): number {
     var array: number[] = Stat.requireArray(collection, keySelectorFn);
     return array.reduce(function(prev: number, next: number): number {
@@ -65,12 +52,12 @@ class Stat {
   }
 
   public static mean(collection: number[] | Object[], keySelectorFn?: Function): number {
-    var array: number[] = Stat.requireArray(collection);
+    var array: number[] = Stat.requireArray(collection, keySelectorFn);
     return (Stat.sum(array) / array.length);
   }
 
   public static variance(collection: number[] | Object[], keySelectorFn?: Function): number {
-    var array: number[] = Stat.requireArray(collection);
+    var array: number[] = Stat.requireArray(collection, keySelectorFn);
     var mean = Stat.mean(array);
     return (array.reduce(function(prev: number, next: number) {
       return (prev + Math.pow(next - mean, 2));
@@ -78,18 +65,18 @@ class Stat {
   }
 
   public static stdev(collection: number[] | Object[], keySelectorFn?: Function): number {
-    var array: number[] = Stat.requireArray(collection);
+    var array: number[] = Stat.requireArray(collection, keySelectorFn);
     return Math.sqrt(Stat.variance(array));
   }
 
   public static stdError(collection: number[] | Object[], keySelectorFn?: Function): number {
-    var array: number[] = Stat.requireArray(collection);
+    var array: number[] = Stat.requireArray(collection, keySelectorFn);
     return (Stat.stdev(array) / Math.sqrt(array.length));
   }
 
   public static covar(collection1: number[] | Object[], collection2: number[] | Object[], keySelectorFn?: Function): number {
-    var array1: number[] = Stat.requireArray(collection1);
-    var array2: number[] = Stat.requireArray(collection2);
+    var array1: number[] = Stat.requireArray(collection1, keySelectorFn);
+    var array2: number[] = Stat.requireArray(collection2, keySelectorFn);
     if (array1.length !== array2.length) {
       throw new Error('Stat.covar requires two arrays of the same length');
     }
@@ -103,14 +90,14 @@ class Stat {
   }
 
   public static correl(collection1: number[] | Object[], collection2: number[] | Object[], keySelectorFn?: Function): number {
-    var array1: number[] = Stat.requireArray(collection1);
-    var array2: number[] = Stat.requireArray(collection2);
+    var array1: number[] = Stat.requireArray(collection1, keySelectorFn);
+    var array2: number[] = Stat.requireArray(collection2, keySelectorFn);
     var size: number = array1.length;
     if (size !== array2.length) {
       throw new Error('Stat.correl requires two arrays of the same length');
     }
-    var stdev1 = Stat.stdev(array1);
-    var stdev2 = Stat.stdev(array2);
+    var stdev1: number = Stat.stdev(array1);
+    var stdev2: number = Stat.stdev(array2);
     return Stat.covar(array1, array2) / (stdev1 * stdev2);    
   }
 
