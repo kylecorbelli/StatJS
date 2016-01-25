@@ -42,7 +42,6 @@
       expect(Stat.each).to.be.a('function');
       expect(Stat.all).to.be.a('function');
       expect(Stat.requireArray).to.be.a('function');
-      expect(Stat.objectToNumber).to.be.a('function');
       expect(Stat.sum).to.be.a('function');
       expect(Stat.mean).to.be.a('function');
       expect(Stat.variance).to.be.a('function');
@@ -78,7 +77,7 @@
 
     describe('Stat.all', function() {
 
-      it('should return true if every element in the array', function() {
+      it('should return true if every element in the array passes the truth test', function() {
         var a = [2, 4, 6, 8, 10];
         var result = Stat.all(a, function(e) {
           return (e % 2 === 0);
@@ -86,7 +85,7 @@
         expect(result).to.equal(true);
       });
 
-      it('should return false if any element in the array evaluates to true in the callback function', function() {
+      it('should return false if any element in the array does not pass the truth test', function() {
         var a = [2, 4, 6, 8, 9, 52, 10];
         var result = Stat.all(a, function(e) {
           return (e % 2 === 0);
@@ -103,8 +102,8 @@
       });
 
       it('should return a numeric array when given an array of objects', function() {
-        expect(Stat.requireArray(objs, function(e) {
-          return e.dataPoint;
+        expect(Stat.requireArray(objs, function(obj) {
+          return obj.dataPoint;
         })).to.deep.equal(cArr1);
       });
 
@@ -124,13 +123,11 @@
         expect(function() {
           Stat.requireArray(undefined);
         }).to.throw(Error);
+        expect(function() {
+          Stat.requireArray();
+        }).to.throw(Error);
       });
 
-      it('should not throw an error when given valid input', function() {
-        expect(function() {
-          Stat.requireArray([1, 2, 3]);
-        }).not.to.throw(Error);
-      });
 
       it('should throw an error when given an array containing something other than a number or object', function() {
         expect(function() {
@@ -138,33 +135,39 @@
         }).to.throw(Error);
       });
 
-    });
-
-    describe('Stat.objectToNumber', function() {
-
-      beforeEach(function() {
-        result = Stat.objectToNumber(objs, function(item) {
-          return item.dataPoint;
-        });
+      it('should not throw an error when given valid array-of-numbers input', function() {
+        expect(function() {
+          Stat.requireArray([1, 2, 3]);
+        }).not.to.throw(Error);
       });
 
-      it('should return the correct array of numbers', function() {
-        expect(result).to.deep.equal(cArr1);
+      it('should not throw an error when given valid array-of-objects input', function() {
+        expect(function() {
+          Stat.requireArray(objs, function(obj) {
+            return obj.dataPoint;
+          });
+        }).not.to.throw(Error);
+      });
+
+      it('should convert an array of objects with a numeric property into an array of numbers', function() {
+        expect(Stat.requireArray(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.deep.equal(cArr1);
       });
 
     });
 
     describe('Stat.sum', function() {
 
-      it('should return a number', function() {
+      it('should return a number when passed an array of numbers', function() {
         expect(Stat.sum(testArr)).to.be.a('number');
       });
 
-      it('should return the correct sum when passed an array', function() {
+      it('should return the correct sum when passed an array of numbers', function() {
         expect(Stat.sum(testArr)).to.equal(40.66221);
       });
 
-      it('should return a number when passed an object', function() {
+      it('should return a number when passed an array of objects', function() {
         var resultOnObj = Stat.sum(objs, function(item) {
           // console.log(item.dataPoint);
           return item.dataPoint;
@@ -172,9 +175,8 @@
         expect(resultOnObj).to.be.a('number');
       });
 
-      it('should return the correct sum when passed an object', function() {
+      it('should return the correct sum when passed an array of objects', function() {
         var resultOnObj = Stat.sum(objs, function(item) {
-          // console.log(item.dataPoint);
           return item.dataPoint;
         });
         expect(resultOnObj).to.equal(47);
@@ -184,12 +186,24 @@
 
     describe('Stat.mean', function() {
 
-      it('should return a number', function() {
+      it('should return a number when passed an array of numbers', function() {
         expect(Stat.mean(testArr)).to.be.a('number');
       });
 
-      it('should return the correct mean', function() {
+      it('should return the correct mean when passed an array of numbers', function() {
         expect(Stat.mean(testArr)).to.equal(4.518023333333334);
+      });
+
+      it('should return a number when passed an array of objects', function() {
+        expect(Stat.mean(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.be.a('number');
+      });
+
+      it('should return the correct mean when passed an array of objects', function() {
+        expect(Stat.mean(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.equal(4.7);
       });
 
     });
