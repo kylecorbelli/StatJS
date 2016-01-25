@@ -1,19 +1,51 @@
 var Stat = (function () {
     function Stat() {
     }
-    Stat.requireArray = function (arrayInput) {
-        if (!Array.isArray(arrayInput)) {
-            throw new Error('This method requires a numeric array as input');
-        }
-        arrayInput.forEach(function (element) {
-            if (typeof element !== 'number') {
-                throw new Error('This method requires a NUMERIC array as input');
-            }
-        });
-        if (arrayInput.length === 0) {
-            throw new Error('This method requires a NON-EMPTY numeric array as input');
+    Stat.each = function (array, callback) {
+        for (var i = 0; i < array.length; i++) {
+            callback(array[i]);
         }
     };
+    Stat.all = function (array, conditionCheckFn) {
+        for (var i = 0; i < array.length; i++) {
+            if (!conditionCheckFn(array[i])) {
+                return false;
+            }
+        }
+        return true;
+    };
+    Stat.requireArray = function (collection, keySelectorFn) {
+        var array = [];
+        // collection is even an array... of either numeric values hopefully or objects hopefully
+        if (Array.isArray(collection)) {
+            if (collection.length === 0) {
+                throw new Error('Method requires a non-empty numeric array as input');
+            }
+            var isAllNumbers = Stat.all(collection, function (element) {
+                return (typeof element === 'number');
+            });
+            var isAllObjects = Stat.all(collection, function (element) {
+                return ((typeof element === 'object') && !Array.isArray(element));
+            });
+            if (isAllNumbers) {
+                array = collection.slice();
+            }
+            else if (isAllObjects) {
+                Stat.each(collection, function (element) {
+                    array.push(keySelectorFn(element));
+                });
+            }
+            else {
+                throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+            }
+        }
+        else {
+            throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+        }
+        return array;
+    };
+    // private static objectToNumber(collection: number[]): number;
+    // private static objectToNumber(collection: Object[], keySelectorFn: Function): number;
     Stat.objectToNumber = function (collection, keySelectorFn) {
         var resultArray = [];
         if (typeof collection[0] === 'number') {
