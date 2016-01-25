@@ -15,9 +15,9 @@ class Stat {
     return true;
   }
 
-  private static requireArray(collection: number[]): number[];
-  private static requireArray(collection: Object[], keySelectorFn: Function): number[];
-  private static requireArray(collection: number[] | Object, keySelectorFn?: Function): number[] {
+  // private static requireArray(collection: number[]): number[];
+  // private static requireArray(collection: Object[], keySelectorFn: Function): number[];
+  private static requireArray(collection: number[] | Object[], keySelectorFn?: Function): number[] {
     var array: number[] = [];
     if (Array.isArray(collection)) {
       if (collection.length === 0) {
@@ -36,10 +36,10 @@ class Stat {
           array.push(keySelectorFn(element));
         });
       } else {
-        throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+        throw new Error('Method requires as input an array of numeric values or an array of objects with a numeric property');
       }
     } else {
-      throw new Error('Method requires as input an array of numeric values or an arry of objects with a numeric property');
+      throw new Error('Method requires as input an array of numeric values or an array of objects with a numeric property');
     }
     return array;
   }
@@ -58,39 +58,38 @@ class Stat {
   }
 
   public static sum(collection: number[] | Object[], keySelectorFn?: Function): number {
-    var array: number[] = Stat.objectToNumber(collection, keySelectorFn);
-    Stat.requireArray(array);
+    var array: number[] = Stat.requireArray(collection, keySelectorFn);
     return array.reduce(function(prev: number, next: number): number {
       return (prev + next);
     });
   }
 
-  public static mean(arrayInput: number[]): number {
-    Stat.requireArray(arrayInput);
-    return (Stat.sum(arrayInput) / arrayInput.length);
+  public static mean(collection: number[] | Object[], keySelectorFn?: Function): number {
+    var array: number[] = Stat.requireArray(collection);
+    return (Stat.sum(array) / array.length);
   }
 
-  public static variance(arrayInput: number[]): number {
-    Stat.requireArray(arrayInput);
-    var mean = Stat.mean(arrayInput);
-    return (arrayInput.reduce(function(prev: number, next: number) {
+  public static variance(collection: number[] | Object[], keySelectorFn?: Function): number {
+    var array: number[] = Stat.requireArray(collection);
+    var mean = Stat.mean(array);
+    return (array.reduce(function(prev: number, next: number) {
       return (prev + Math.pow(next - mean, 2));
-    }, 0) / (arrayInput.length - 1));
+    }, 0) / (array.length - 1));
   }
 
-  public static stdev(arrayInput: number[]): number {
-    Stat.requireArray(arrayInput);
-    return Math.sqrt(Stat.variance(arrayInput));
+  public static stdev(collection: number[] | Object[], keySelectorFn?: Function): number {
+    var array: number[] = Stat.requireArray(collection);
+    return Math.sqrt(Stat.variance(array));
   }
 
-  public static stdError(arrayInput: number[]): number {
-    Stat.requireArray(arrayInput);
-    return (Stat.stdev(arrayInput) / Math.sqrt(arrayInput.length));
+  public static stdError(collection: number[] | Object[], keySelectorFn?: Function): number {
+    var array: number[] = Stat.requireArray(collection);
+    return (Stat.stdev(array) / Math.sqrt(array.length));
   }
 
-  public static covar(array1: number[], array2: number[]): number {
-    Stat.requireArray(array1);
-    Stat.requireArray(array2);
+  public static covar(collection1: number[] | Object[], collection2: number[] | Object[], keySelectorFn?: Function): number {
+    var array1: number[] = Stat.requireArray(collection1);
+    var array2: number[] = Stat.requireArray(collection2);
     if (array1.length !== array2.length) {
       throw new Error('Stat.covar requires two arrays of the same length');
     }
@@ -103,9 +102,9 @@ class Stat {
     return sumOfErrorProducts / (array1.length - 1);
   }
 
-  public static correl(array1: number[], array2: number[]): number {
-    Stat.requireArray(array1);
-    Stat.requireArray(array2);
+  public static correl(collection1: number[] | Object[], collection2: number[] | Object[], keySelectorFn?: Function): number {
+    var array1: number[] = Stat.requireArray(collection1);
+    var array2: number[] = Stat.requireArray(collection2);
     var size: number = array1.length;
     if (size !== array2.length) {
       throw new Error('Stat.correl requires two arrays of the same length');
