@@ -232,6 +232,30 @@
 
     });
 
+    describe('Stat.stdev', function() {
+
+      it('should return a number when passed an array of numbers', function() {
+        expect(Stat.stdev(testArr)).to.be.a('number');
+      });
+
+      it('should return the correct standard deviation when passed an array of numbers', function() {
+        expect(Stat.stdev(testArr)).to.equal(3.15606447413547);
+      });
+
+      it('should return a number when passed an array of objects', function() {
+        expect(Stat.stdev(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.be.a('number');
+      });
+
+      it('should return the correct standard deviation when passed an array of objects', function() {
+        expect(Stat.stdev(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.equal(2.1628170930011117);
+      });
+
+    });
+
     describe('Stat.covar', function() {
 
       it('should return a number when passed an array of numbers', function() {
