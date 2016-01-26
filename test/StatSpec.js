@@ -208,9 +208,33 @@
 
     });
 
+    describe('Stat.variance', function() {
+
+      it('should return a number when passed an array of numbers', function() {
+        expect(Stat.variance(testArr)).to.be.a('number');
+      });
+
+      it('should return the correct variance when passed an array of numbers', function() {
+        expect(Stat.variance(testArr)).to.equal(9.960742964900001);
+      });
+
+      it('should return a number when passed an array of objects', function() {
+        expect(Stat.variance(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.be.a('number');
+      });
+
+      it('should return the correct variance when passed an array of objects', function() {
+        expect(Stat.variance(objs, function(obj) {
+          return obj.dataPoint;
+        })).to.equal(4.677777777777779);
+      });
+
+    });
+
     describe('Stat.covar', function() {
 
-      it('should return a number', function() {
+      it('should return a number when passed an array of numbers', function() {
         expect(Stat.covar(cArr1, cArr2)).to.be.a('number');
       });
 
